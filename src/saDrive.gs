@@ -1,3 +1,14 @@
+var super_ = this;
+
+function Init(tokenService){
+  super_.getToken = tokenService;
+  return super_;
+}
+
+function ServiceAccount(email){
+ return new ServiceAccount_(email);
+}
+
 function ServiceAccount_(email){
   var sadrive = {};
   
