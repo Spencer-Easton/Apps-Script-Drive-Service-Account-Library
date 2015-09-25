@@ -11,7 +11,7 @@
 // to the admin console before the api project becomes authorized on your domain
 
 function myFunction(){
-   Logger.log(getAllFilesOfUser("user@myDomain.org"));
+   Logger.log(getAllFoldersOfUser("user@myDomain.org"));
 }
 
 function getAllFilesOfUser(email) {
