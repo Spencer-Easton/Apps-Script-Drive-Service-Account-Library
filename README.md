@@ -5,14 +5,15 @@ This library is specifically designed for transfer of ownership of files and fol
 
 ######Note: This was written by an amature. I would say I'm mediocre at best. I wrote this for my own uses at work.  There is no error checking. Things may be unintuitive or misspelled. Want to fix something let me know or fork it.  
 
-####This library has a dependency:
-You will need to add the library-   
-GAS_Service_Accounts  
-MJ5317VIFJyKpi9HCkXOfS0MLm9v2IJHf
 
+####Initialize the service with: 
 
-####Initialize the service with:  
-Init(Array ScopesArray, String Service-Account-Email, String rsaKey);
+     The function passed to init will be invoked by this library.  
+     It is responsible for checking the freshness of the token as  
+     this library will not do so. See the example script for an example of  
+     a token service function    
+Init(function tokenService);  
+
  
 ####Get access to a users drive with:  
 var thisUser = ServiceAccount(String usersEmail);  
