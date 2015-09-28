@@ -14,7 +14,7 @@ function myFunction(){
    Logger.log(getAllFoldersOfUser("user@myDomain.org"));
 }
 
-function getAllFilesOfUser(email) {
+function getAllFoldersOfUser(email) {
   var ts = tokenService(email);
   saDrive.Init(ts);
   var dSA = saDrive.ServiceAccount(email);
