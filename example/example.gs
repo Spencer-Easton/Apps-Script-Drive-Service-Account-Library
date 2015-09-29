@@ -7,9 +7,10 @@
 // Add the serive account clientId to your domain Admin console under
 //         `Manage API client access` with the scope:
 //   https://www.googleapis.com/auth/drive
-// Note: It may take up to 15 minutes after adding the clientId 
+// Note: It may take 15 minutes to a few hours after adding the clientId 
 // to the admin console before the api project becomes authorized on your domain
-// It has been reported to take much longer up to a few hours.
+// The Error: There was an error requesting a Token from the OAuth server: unauthorized_client
+// means you need to wait a bit longer
 
 function myFunction(){
    Logger.log(getAllFoldersOfUser("user@myDomain.org"));
