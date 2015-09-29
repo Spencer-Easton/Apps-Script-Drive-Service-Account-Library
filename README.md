@@ -8,8 +8,8 @@ This library is specifically designed for transfer of ownership of files and fol
 
 ####Initialize the service with: 
 
-     The function passed to init will be invoked by this library.  
-     It is responsible for checking the freshness of the token as  
+     The function passed to init will be invoked by this library to  
+     get an Oauth2 Token. It is responsible for checking the freshness of the token as  
      this library will not do so. See the example script for an example of  
      a token service function    
 Init(function tokenService);  
