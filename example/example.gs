@@ -9,6 +9,7 @@
 //   https://www.googleapis.com/auth/drive
 // Note: It may take up to 15 minutes after adding the clientId 
 // to the admin console before the api project becomes authorized on your domain
+// It has been reported to take much longer up to a few hours.
 
 function myFunction(){
    Logger.log(getAllFoldersOfUser("user@myDomain.org"));
