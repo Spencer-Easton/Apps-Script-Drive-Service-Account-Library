@@ -10,8 +10,10 @@ This library is specifically designed for transfer of ownership of files and fol
 
      The function passed to init will be invoked by this library to  
      get an Oauth2 Token. It is responsible for checking the freshness of the token as  
-     this library will not do so. See the example script for an example of  
-     a token service function    
+     this library will not do so. You can use the checkToken() method to see if the  
+     tokenService is generating valid tokens the library can use. See the example script for  
+     an example of a token service function.     
+
 Init(function tokenService);  
 
  
@@ -22,5 +24,12 @@ thisUser.transferFolderToUser(String folderId, String recipientsEmail);
 thisUser.getFilesInFolder(String folderId);  
 thisUser.transferFileToUser(String fileId, recipientEmail);  
 thisUser.batchPermissionChange(Array fileId/folderId*, recipientEmail);  
-    *In drive a folder is a file so either may be used. You can batch up to 1000 at a time;
+    *In drive a folder is a file so either may be used. You can batch up to 1000 at a time;  
+    
  
+####Check the token service  
+    function checkToken(){
+      var ts = tokenService("user@myDomain.org")
+      saDrive.Init(ts);
+      Logger.log(saDrive.checkToken());
+    }
