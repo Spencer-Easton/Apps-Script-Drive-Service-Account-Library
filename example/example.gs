@@ -23,6 +23,12 @@ function getAllFoldersOfUser(email) {
   return dSA.getAllFolders();
 }
  
+function checkToken(){
+  var ts = tokenService("user@myDomain.rg")
+  saDrive.Init(ts);
+  Logger.log(saDrive.checkToken());
+}
+
 
 
 // If userEmail is null the service account's token is returned   
