@@ -5,6 +5,29 @@ function Init(tokenService){
   return super_;
 }
 
+function checkToken(){
+  if(!("getToken" in super_)){
+    throw new Error("{error:'Token Service not set use Init()'}")
+  }
+  if (typeof super_.getToken !== 'function'){
+    throw new Error("{error:'Token Service is not a valid function'}")
+  }
+  
+  var url = 'https://www.googleapis.com/oauth2/v1/tokeninfo?access_token='+ super_.getToken();
+  var driveScope = "https://www.googleapis.com/auth/drive";  
+  var results = JSON.parse(UrlFetchApp.fetch(url).getContentText());
+  
+  if("error" in results){
+    return {error:'Invalid Token'};
+  }
+  
+  if (results.scope.indexOf(driveScope) == -1){
+    return {error:'Token does not contain the required scope of '+ driveScope}
+  }
+ return {success:"Valid Token"};
+}
+
+
 function ServiceAccount(email){
  return new ServiceAccount_(email);
 }
