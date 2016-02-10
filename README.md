@@ -1,4 +1,4 @@
-# Drive-Service-Account-Libarary
+# Drive-Service-Account-Library
 Library for using service accounts with drive
 
 This library is specifically designed for transfer of ownership of files and folder in Google Drive inside a domain setting.
