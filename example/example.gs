@@ -21,13 +21,13 @@ function myFunctionWithOptions(){
       additionalQuery:"'user@myDomain' in owners",
       byPage:10
    }
-   var results = getAllFoldersOfUser("user@myDomain.org"), options);
+   var results = getAllFoldersOfUser("user@myDomain.org", options);
    Logger.log(results)
   
    //check the next 10 results 
    if(results.nextPageToken){
       options["nextPageToken"] = results.nextPageToken;
-      results = getAllFoldersOfUser("user@myDomain.org"), options);
+      results = getAllFoldersOfUser("user@myDomain.org", options);
       Logger.log(results)   
    }
 
