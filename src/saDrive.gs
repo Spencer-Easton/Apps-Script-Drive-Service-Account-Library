@@ -24,12 +24,12 @@ function checkToken(){
   if (results.scope.indexOf(driveScope) == -1){
     return {error:'Token does not contain the required scope of '+ driveScope}
   }
- return {success:"Valid Token"};
+  return {success:"Valid Token"};
 }
 
 
 function ServiceAccount(email){
- return new ServiceAccount_(email);
+  return new ServiceAccount_(email);
 }
 
 function ServiceAccount_(email){
@@ -63,27 +63,69 @@ function ServiceAccount_(email){
     return JSON.parse(UrlFetchApp.fetch("https://www.googleapis.com/drive/v2/permissionIds/"+email,{headers:{Authorization:"Bearer "+token}})).id;
   }
   
-  
-  
-  
-  sadrive.getAllFolders = function(){
-    var token = super_.getToken();
-    var query = "mimeType = 'application/vnd.google-apps.folder'";
-    return driveList(query, token);
+  sadrive.getAllFolders = function(options){
+    var query = "mimeType = 'application/vnd.google-apps.folder'"
+    return buildFetchRequest(query,options);
   }
   
   
-  
-  
-  sadrive.getFilesInFolder = function(folderId){
-    var token = super_.getToken();
-    var query = "'"+folderId+"' in parents and mimeType != 'application/vnd.google-apps.folder'";
-    return driveList(query, token);
+  sadrive.getFilesInFolder = function(folderId,options){
+    var query = "'"+folderId+"' in parents and mimeType != 'application/vnd.google-apps.folder'"
+    return buildFetchRequest(query,options);
   }
   
   
+  function buildFetchRequest(query, options){   
+    var options = options || {};
+    if(options.additionalQuery){
+      options.additionalQuery = " and " + options.additionalQuery;
+    }else{
+      options.additionalQuery = "";
+    }
+    
+    query +=  options.additionalQuery;
+    
+    if(options.byPage || options.nextPageToken){
+      return driveListByPage(query,options.nextPageToken,options.byPage) 
+    }    
+    return driveList(query);
+    
+  }
   
-  function driveList(query){
+  function driveListByPage(query, pageToken,maxResults){
+    var token = super_.getToken();
+    var filesArray = [];    
+    var params = {method:"GET",
+                  contentType:'application/json',
+                  headers:{Authorization:"Bearer "+token},
+                  muteHttpExceptions:true
+                 };
+    
+    
+    var url = "https://www.googleapis.com/drive/v2/files?q="+ query;
+    if(pageToken){
+      url += "&pageToken="+pageToken;
+    }
+    
+    if(maxResults){
+      url += "&maxResults=" + maxResults; 
+    }
+    url = encodeURI(url);    
+    var results = UrlFetchApp.fetch(url,params);
+    var files = JSON.parse(results.getContentText());
+    for(var i in files.items){
+      filesArray.push({"name":files.items[i].title, "id":files.items[i].id,"link":files.items[i].selfLink})
+    }
+    var filesObj = {};
+    filesObj["fileObjs"] = filesArray;
+    if(files.nextPageToken){
+      filesObj["nextPageToken"] = files.nextPageToken;
+    }
+    
+    return filesObj;
+  }
+  
+  function driveList(query){   
     var token = super_.getToken();
     var filesArray = [];
     var pageToken = "";
@@ -107,7 +149,7 @@ function ServiceAccount_(email){
       url = "https://www.googleapis.com/drive/v2/files?q="+query;  
       
       for(var i in files.items){
-        filesArray.push({"name":files.items[i].title, "id":files.items[i].id})
+        filesArray.push({"name":files.items[i].title, "id":files.items[i].id,"link":files.items[i].selfLink})
       }
       
       pageToken = files.nextPageToken;
@@ -118,10 +160,7 @@ function ServiceAccount_(email){
     filesObj["fileObjs"] = filesArray;
     
     return filesObj;
-    
   }
-  
-  
   
   sadrive.batchPermissionChange = function(fileIds, transferToEmail){
     var token = super_.getToken();
@@ -145,7 +184,6 @@ function ServiceAccount_(email){
       multipartRequestBody += permissions+'\r\n\r\n'    
     }
     multipartRequestBody += close_delim;
-    
     
     var parameters = {method:'POST',
                       headers : {'Authorization': 'Bearer '+ token},                    
