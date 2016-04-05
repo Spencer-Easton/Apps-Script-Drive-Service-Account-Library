@@ -16,11 +16,30 @@ function myFunction(){
    Logger.log(getAllFoldersOfUser("user@myDomain.org"));
 }
 
-function getAllFoldersOfUser(email) {
+function myFunctionWithOptions(){
+   var options = {
+      additionalQuery:"'user@myDomain' in owners",
+      byPage:10
+   }
+   var results = getAllFoldersOfUser("user@myDomain.org"), options);
+   Logger.log(results)
+  
+   //check the next 10 results 
+   if(results.nextPageToken){
+      options["nextPageToken"] = results.nextPageToken;
+      results = getAllFoldersOfUser("user@myDomain.org"), options);
+      Logger.log(results)   
+   }
+
+   
+   
+}
+
+function getAllFoldersOfUser(email, additionalOptions) {
   var ts = tokenService(email);
   saDrive.Init(ts);
   var dSA = saDrive.ServiceAccount(email);
-  return dSA.getAllFolders();
+  return dSA.getAllFolders(additionalOptions);
 }
  
 function checkToken(){
